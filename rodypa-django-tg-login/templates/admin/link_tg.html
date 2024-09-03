@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="{% static 'tg_authorization/js/on_auth_handler.js' %}"></script>
+{% endblock %}
+
+{% block userlinks %}
+  {{block.super}}
+{% endblock %}
+{% block breadcrumbs %}
+  {{block.super}}
+{% endblock %}
+
+{% block content %}<div id="content-main">
+
+<form method="post">{% csrf_token %}
+<div>
+{% if form.errors %}
+    <p class="errornote">
+    {% if form.errors.items|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+    </p>
+{% endif %}
+
+<p>{% translate 'Please enter your Telegram ID, or use interactive widget to send your telegram id automatically.' %}</p>
+
+<fieldset class="module aligned wide">
+
+<div class="form-row">
+    {{ form.tg_id.errors }}
+    {{ form.tg_id.label_tag }} {{ form.tg_id }}
+</div>
+
+<div class="telegram-login-widget-box">
+    {% autoescape off %}
+      {{ telegram_login_widget }}
+    {% endautoescape %}
+  </div>
+
+</fieldset>
+<div class="submit-row">
+    <input type="submit" value="{% translate 'Link my TG ACCOUNT' %}" class="default">
+</div>
+
+</div>
+</form></div>
+
+{% endblock %}

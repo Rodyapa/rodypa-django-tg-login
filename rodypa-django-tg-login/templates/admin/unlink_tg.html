@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media }}
+    <script src="{% static 'admin/js/cancel.js' %}" async></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; {% translate 'Unlink Telegram Account' %}
+</div>
+{% endblock %}
+
+{% block content %}
+    <p>{% blocktranslate %}Are you sure you want to unlink your account from telegram? {% endblocktranslate %}</p>
+    <form method="post">{% csrf_token %}
+    <div>
+    <input type="hidden" name="post" value="yes">
+    {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+    {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+    <input type="submit" value="{% translate 'Yes, I’m sure' %}">
+    <a href="#" class="button cancel-link">{% translate "No, take me home" %}</a>
+    </div>
+    </form>
+{% endblock %}
